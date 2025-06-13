@@ -4,9 +4,8 @@ ssh maybetuandat@192.168.122.211  -- master1
 ssh maybetuandat@192.168.122.85   --worker1
 
 ansible-playbook -i /inventory/inventory.ini cluster.yml --become --ask-pass --ask-become-pass
-docker run --rm -it \
---mount type=bind,source="$(pwd)"/inventory/mycluster,dst=/kubespray/inventory/mycluster \
---mount type=bind,source="${HOME}"/.ssh/id_rsa,dst=/root/.ssh/id_rsa \
-quay.io/kubespray/kubespray:v2.28.0 bash
+ docker run -it --mount type=bind,source="$(pwd)"/kubespray/inventory/mycluster,dst=/kubespray/inventory/mycluster --mount type=bind,source="$(pwd)"/lab1_k8s_vdt,dst=/kubespray/lab1_k8s_vdt --mount type=bind,source="${HOME}"/.ssh/id_rsa,dst=/root/.ssh/id_rsa quay.io/kubespray/kubespray:v2.28.0 bash
 
-
+kubectl create configmap postgres-init --from-file=lab1_k8s_vdt/demo/init.sql -n student-management
+kubectl get configmap -n student-management
+/tmp/backend.tar
