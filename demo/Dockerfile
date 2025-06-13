@@ -1,5 +1,11 @@
+FROM maven:3.9.6-amazoncorretto-21 as build
+
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
+
 FROM alpine/java:21.0.4-jre
 WORKDIR /app
-COPY target/demo-0.0.1-SNAPSHOT.jar /app/demo.jar
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-CMD ["java", "-jar", "demo.jar"]
+CMD ["java", "-jar", "app.jar"]
