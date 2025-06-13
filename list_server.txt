@@ -1,0 +1,12 @@
+
+ssh maybetuandat@192.168.122.194  -- ansible 
+ssh maybetuandat@192.168.122.211  -- master1
+ssh maybetuandat@192.168.122.85   --worker1
+
+ansible-playbook -i /inventory/inventory.ini cluster.yml --become --ask-pass --ask-become-pass
+docker run --rm -it \
+--mount type=bind,source="$(pwd)"/inventory/mycluster,dst=/kubespray/inventory/mycluster \
+--mount type=bind,source="${HOME}"/.ssh/id_rsa,dst=/root/.ssh/id_rsa \
+quay.io/kubespray/kubespray:v2.28.0 bash
+
+
